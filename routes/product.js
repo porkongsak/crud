@@ -1,38 +1,39 @@
 var express = require("express");
 var router = express.Router();
 var productModel = require("../models/product");
-var uplaod = require('../controller/file')
+var moment = require('moment')
 
 /* GET home page. */
 // router.get('/tht', function(req, res, next) {
 //   res.send('production');
 // });
 
-router.post("/", uplaod.single("image"), async (req, res) => {
+router.post("/", async (req, res) => {
   try {
 
-    let nameImage = "rambo.jpg";
-    if(req.file){
-      nameImage = req.file.filename
-    } 
+    
     let { product_name, price, amount,  } = req.body;
 
     let newproduct = new productModel({
       product_name: product_name,
       price: price,
       amount: amount,
-      img: nameImage
+      
+    
     });
 
+        // mement(product.createdAt).lacotion(th).format('LLLL')
     let product = await newproduct.save();
-
+    
     return res.status(200).send({
       data: product,
       message: "create product",
+      status: true
     });
   } catch (err) {
     return res.status(500).send({
       message: err.message,
+      status: false
     });
   }
 });
@@ -42,7 +43,8 @@ router.post("/", uplaod.single("image"), async (req, res) => {
 // get product all
 router.get("/", async (req, res) => {
   try {
-    let products = await productModel.find();
+    let products = await productModel.find({});
+   // let date = moment(products.createdAt).lacotion(th).format('LLLL')
     return res.status(200).send({
       data: products,
       message: "success",
@@ -130,12 +132,12 @@ router.delete("/:id", async (req, res) => {
     return res.status(200).send({
       data: products,
       message: "sucess",
-      success: true,
+      status: true,
     });
   } catch (err) {
     return res.status(500).send({
       message: "server error",
-      success: false,
+      status: false,
     });
   }
 });

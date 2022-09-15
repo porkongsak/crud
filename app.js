@@ -12,7 +12,7 @@ require('dotenv').config()
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRouter =require('./routes/product')
-var Auth = require('./middleware/middlejwt')
+//var Auth = require('./middleware/middlejwt')
 
 var app = express();
 app.use(cors())
@@ -47,7 +47,7 @@ app.use('/users', usersRouter);
 
 
 // product
-app.use('/product',Auth,productRouter);
+app.use('/product',productRouter);
 
 
 // catch 404 and forward to error handler
